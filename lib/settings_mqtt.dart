@@ -79,30 +79,30 @@ class _MyCustomFormState extends State<MyCustomForm> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(
-          padding: EdgeInsets.all(0.0),
+          padding: const EdgeInsets.all(0.0),
           shrinkWrap: true,
           children: <Widget>[
             TextField(
               textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: 'URL'),
+              decoration: const InputDecoration(labelText: 'URL'),
               controller: controllerUrl,
               onChanged: (text) {},
             ),
             TextField(
               textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: 'PORT'),
+              decoration: const InputDecoration(labelText: 'PORT'),
               controller: controllerPort,
               onChanged: (text) {},
             ),
             TextField(
               textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: 'UserName'),
+              decoration: const InputDecoration(labelText: 'UserName'),
               controller: controllerUserName,
               onChanged: (text) {},
             ),
             TextField(
               textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: const InputDecoration(labelText: 'Password'),
               controller: controllerPassword,
               obscureText: true,
               obscuringCharacter: '•',
@@ -110,23 +110,23 @@ class _MyCustomFormState extends State<MyCustomForm> {
             ),
             TextField(
               textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: 'IoTimeout'),
+              decoration: const InputDecoration(labelText: 'IoTimeout'),
               controller: controllerIoTimeout,
               onChanged: (text) {},
             ),
             TextField(
               textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: 'KeepAlive'),
+              decoration: const InputDecoration(labelText: 'KeepAlive'),
               controller: controllerKeepAlive,
             ),
             TextField(
               textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: 'ClientID'),
+              decoration: const InputDecoration(labelText: 'ClientID'),
               controller: controllerClienID,
             ),
             TextField(
               textInputAction: TextInputAction.done,
-              decoration: InputDecoration(labelText: 'Prefix'),
+              decoration: const InputDecoration(labelText: 'Prefix'),
               controller: controllerPrefix,
             ),
             const SizedBox(height: 20),
