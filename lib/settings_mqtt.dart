@@ -53,7 +53,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
   @override
   Widget build(BuildContext context)  {
 
-    Hive.initFlutter();
+   // Hive.initFlutter();
    // var mqttBox =  Hive.openBox<String>('SetBox');
 //final String url = mqttBox.get('url');
     

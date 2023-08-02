@@ -5,15 +5,16 @@ import 'settings_screen.dart';
 import 'settings_mqtt.dart';
 import 'settings_alarm.dart';
 import 'package:provider/provider.dart';
-//import 'package:hive/hive.dart';
-//
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 // import 'package:my_app/mqtt/state/MQTTAppState.dart';
 // import 'package:mqtt_client/mqtt_client.dart';
 // import 'package:my_app/mqtt/state/MQTTAppState.dart';
 // import 'package:mqtt_client/mqtt_server_client.dart';
 
-void main() {
-  
+void main() async {
+  await Hive.initFlutter();
   //var box = Hive.box('MqttBox');
   var login;
   runApp(
