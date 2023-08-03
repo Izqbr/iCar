@@ -26,14 +26,17 @@ class _MyCustomFormState extends State<MyCustomForm> {
   final controllerClienID = TextEditingController();
   final controllerPrefix = TextEditingController();
   
+  var mqttBox = Hive.box('myBox');
+  
   
 
   @override
   void initState() {
+//getValue();
     super.initState();
-
+    
     // Start listening to changes.
-    controllerUrl.addListener(_printLatestValue);
+    //controllerUrl.addListener();
   }
 
   @override
@@ -46,21 +49,19 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
   
 
-  void _printLatestValue() {
-    print('Second text field: ${controllerUrl.text}');
-  }
+  // void getValue() {
+  //   url = mqttBox.get('url', defaultValue: '?????') as String;
+  // }
 
   @override
   Widget build(BuildContext context)  {
 
-   // Hive.initFlutter();
-   // var mqttBox =  Hive.openBox<String>('SetBox');
-//final String url = mqttBox.get('url');
+   
     
 
-    controllerUrl.text = '';//url;// mqttBox.get('url', defaultValue: '') as String;
+    controllerUrl.text = mqttBox.get('url', defaultValue: '!!!!!!') as String;
     controllerPort.text = '9991';
-    controllerUserName.text = 'izqbr';
+    controllerUserName.text = 'myUserName';
     controllerPassword.text = '12345678';
     controllerIoTimeout.text = '10';
     controllerKeepAlive.text = '60';
@@ -71,6 +72,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
     //  mqttBox.put('url', controllerUrl);
     //   mqttBox.close();
     // }
+    // var mqttBox = Hive.openBox<String>('SetBox');
+
 
     return Scaffold(
       appBar: AppBar(
@@ -133,9 +136,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
             
             Center(
               child: ElevatedButton(
-                onPressed: () => _showToast(context),
+                onPressed: () => mqttBox.put('url', controllerUrl.text),
+                 // _showToast(context);
+
                 
-                child: const Text('Сохранить !'),
+                
+                child: const Text('Сохранить'),
                 ),
             ),
           
