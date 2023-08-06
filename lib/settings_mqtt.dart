@@ -3,11 +3,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // import 'package:hive/hive.dart';
 // import 'package:hive_flutter/hive_flutter.dart';
 
-
 // Define a custom Form widget.
 class MyCustomForm extends StatefulWidget {
   const MyCustomForm({super.key});
-  
+
   @override
   State<MyCustomForm> createState() => _MyCustomFormState();
 }
@@ -17,7 +16,7 @@ class MyCustomForm extends StatefulWidget {
 class _MyCustomFormState extends State<MyCustomForm> {
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
-  
+
   final controllerUrl = TextEditingController();
   final controllerPort = TextEditingController();
   final controllerUserName = TextEditingController();
@@ -27,15 +26,14 @@ class _MyCustomFormState extends State<MyCustomForm> {
   final controllerClienID = TextEditingController();
   final controllerPrefix = TextEditingController();
   String url = '';
-  
-  final _secureStorage = FlutterSecureStorage();
-  
+
+  final _secureStorage = const FlutterSecureStorage();
 
   @override
   void initState() {
-//getValue();
+//
     super.initState();
-    
+
     // Start listening to changes.
     //controllerUrl.addListener();
   }
@@ -48,31 +46,38 @@ class _MyCustomFormState extends State<MyCustomForm> {
     super.dispose();
   }
 
-  
-
   // void getValue() {
   //   url = mqttBox.get('url', defaultValue: '?????') as String;
   // }
 
   @override
-  Widget build(BuildContext context)  {
+  Widget build(BuildContext context) {
 
-   
-    Future<String> readValue (String v) async {
-      url = (await _secureStorage.read(key: v ))!;
-      
-      return  url;
+
+    Future<void>readValue(String key) async {
+     // url = (await _secureStorage.read(key: v))!;
+      String? stringOfItems = await _secureStorage.read(key: key);
+      print (stringOfItems);
+      controllerUrl.text = stringOfItems!;
+      //return stringOfItems ;
     }
 
-    Future<void> writeValue(String v,t) async {
+    Future<void> writeValue(String v, t) async {
       _secureStorage.write(
         key: v,
         value: t,
       );
-      
     }
-
-    controllerUrl.text = 'mqtt.com';//  readValue('url') as String;
+    readValue('url');
+    readValue('port');
+    readValue('user');
+    readValue('pass');
+    readValue('timeout');
+    readValue('keepalive');
+    readValue('id');
+    readValue('prefix');
+    
+    controllerUrl.text = '';
     controllerPort.text = '8313';
     controllerUserName.text = 'myUserName';
     controllerPassword.text = '12345678';
@@ -80,9 +85,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
     controllerKeepAlive.text = '60';
     controllerClienID.text = 'Android_Client';
     controllerPrefix.text = '/';
-
-    
-
 
     return Scaffold(
       appBar: AppBar(
@@ -142,35 +144,41 @@ class _MyCustomFormState extends State<MyCustomForm> {
               controller: controllerPrefix,
             ),
             const SizedBox(height: 20),
-            
             Center(
               child: ElevatedButton(
                 onPressed: () {
                   writeValue('url', controllerUrl.text);
+                  writeValue('port', controllerPort.text);
+                  writeValue('user', controllerUserName.text);
+                  writeValue('pass', controllerPassword.text);
+                  writeValue('timeout', controllerIoTimeout.text);
+                  writeValue('keepalive', controllerKeepAlive.text);
+                  writeValue('id', controllerClienID.text);
+                  writeValue('prefix', controllerPrefix.text);
                   _showToast(context);
-                  },
-                 // 
+                },
+                //
 
-                
-                
                 child: const Text('Сохранить'),
-                ),
+              ),
             ),
-          
+            
           ],
         ),
       ),
     );
-    
-  
   }
-void _showToast(BuildContext context){
-      final scaffold = ScaffoldMessenger.of(context);
-      scaffold.showSnackBar(
-        SnackBar(
-          content: const Text('Сохранено'),
-          action: SnackBarAction(onPressed: scaffold.hideCurrentSnackBar, label: 'Ok',),
-          ),
-        );
-    }
+
+  void _showToast(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Сохранено'),
+        action: SnackBarAction(
+          onPressed: scaffold.hideCurrentSnackBar,
+          label: 'Ok',
+        ),
+      ),
+    );
+  }
 }
