@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:hive/hive.dart';
+// import 'package:hive_flutter/hive_flutter.dart';
 
 
 // Define a custom Form widget.
@@ -25,9 +26,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
   final controllerKeepAlive = TextEditingController();
   final controllerClienID = TextEditingController();
   final controllerPrefix = TextEditingController();
+  String url = '';
   
-  var mqttBox = Hive.box('myBox');
-  
+  final _secureStorage = FlutterSecureStorage();
   
 
   @override
@@ -57,10 +58,21 @@ class _MyCustomFormState extends State<MyCustomForm> {
   Widget build(BuildContext context)  {
 
    
-    
+    Future<String> readValue (String v) async {
+      url = (await _secureStorage.read(key: v ))!;
+      
+      return  url;
+    }
 
-    controllerUrl.text = mqttBox.get('url', defaultValue: '!!!!!!') as String;
-    controllerPort.text = '9991';
+    Future<void> writeValue(String v,t) async {
+      _secureStorage.write(
+        key: v,
+        value: t,
+      );
+      
+    }
+
+    controllerUrl.text = 'kkkk';//  readValue('url') as String;
     controllerUserName.text = 'myUserName';
     controllerPassword.text = '12345678';
     controllerIoTimeout.text = '10';
@@ -68,11 +80,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     controllerClienID.text = 'Android_Client';
     controllerPrefix.text = '/';
 
-    // void save() async {
-    //  mqttBox.put('url', controllerUrl);
-    //   mqttBox.close();
-    // }
-    // var mqttBox = Hive.openBox<String>('SetBox');
+    
 
 
     return Scaffold(
@@ -136,8 +144,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
             
             Center(
               child: ElevatedButton(
-                onPressed: () => mqttBox.put('url', controllerUrl.text),
-                 // _showToast(context);
+                onPressed: () {
+                  writeValue('url', controllerUrl.text);
+                  _showToast(context);
+                  },
+                 // 
 
                 
                 
