@@ -72,7 +72,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
       
     }
 
-    controllerUrl.text = 'kkkk';//  readValue('url') as String;
+    controllerUrl.text = 'mqtt.com';//  readValue('url') as String;
+    controllerPort.text = '8313';
     controllerUserName.text = 'myUserName';
     controllerPassword.text = '12345678';
     controllerIoTimeout.text = '10';
