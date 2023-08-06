@@ -57,8 +57,18 @@ class _MyCustomFormState extends State<MyCustomForm> {
     Future<void>readValue(String key) async {
      // url = (await _secureStorage.read(key: v))!;
       String? stringOfItems = await _secureStorage.read(key: key);
-      print (stringOfItems);
-      controllerUrl.text = stringOfItems!;
+      // ignore: avoid_print
+      print (stringOfItems.toString());
+      
+      if(key == 'url') controllerUrl.text = stringOfItems!;
+      if (key == 'port') controllerPort.text = stringOfItems!;
+      if (key == 'user') controllerUserName.text = stringOfItems!;
+      if (key == 'pass') controllerPassword.text = stringOfItems!;
+      if(key == 'timeout') controllerIoTimeout.text = stringOfItems!;
+      if (key == 'keepalive') controllerKeepAlive.text = stringOfItems!;
+      if (key == 'id') controllerClienID.text = stringOfItems!;
+      if (key == 'prefix') controllerPrefix.text = stringOfItems!;
+      //controllerUrl.text = stringOfItems!;
       //return stringOfItems ;
     }
 
@@ -78,11 +88,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
     readValue('prefix');
     
     controllerUrl.text = '';
-    controllerPort.text = '8313';
-    controllerUserName.text = 'myUserName';
-    controllerPassword.text = '12345678';
-    controllerIoTimeout.text = '10';
-    controllerKeepAlive.text = '60';
+    controllerPort.text = '';
+    controllerUserName.text = '';
+    controllerPassword.text = '';
+    controllerIoTimeout.text = '';
+    controllerKeepAlive.text = '';
     controllerClienID.text = 'Android_Client';
     controllerPrefix.text = '/';
 
