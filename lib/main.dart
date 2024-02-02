@@ -9,9 +9,11 @@ import 'widgets/pin_screen.dart';
 import 'widgets/home_screen_1.dart';
 import 'widgets/topic_set.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
