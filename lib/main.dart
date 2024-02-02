@@ -1,3 +1,4 @@
+import 'package:app_mqtt/widgets/refresh_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_mqtt/state/MQTTAppState.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
               create: (_) => MQTTAppState(),
               child: const MQTTView(),
             ),
+          '/ref': (context) => const RefVariant(),
           '/MyPage': (context) => const MyHomePage(), 
           '/settings': (context) =>  SettingsView(),
           '/map': (context) => const MapView(),

@@ -240,8 +240,12 @@ class MyHomePage extends StatelessWidget {
                 color: const Color.fromARGB(255, 92, 166, 226),
               ), 
                 IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.lock_open,size: 50.0,color: Color.fromARGB(255, 92, 166, 226)),
+                onPressed: () {
+                  Navigator.pushNamed(context, "/ref");
+                },
+                icon: const Icon(Icons.lock_open,
+                size: 50.0,color: Color.fromARGB(255, 92, 166, 226)
+                ),
                 ),
                 
             ],

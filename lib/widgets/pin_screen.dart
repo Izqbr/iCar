@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class PinCodeWidget extends StatefulWidget {
   const PinCodeWidget({super.key});
@@ -9,9 +10,25 @@ class PinCodeWidget extends StatefulWidget {
 }
 
 class _PinCodeWidgetState extends State<PinCodeWidget> {
+  final _secureStorage = const FlutterSecureStorage();
+
+
   String enteredPin = '';
   bool isPinVisible = false;
 
+  Future<void> writeValue(String v, t) async {
+      _secureStorage.write(
+        key: v,
+        value: t,
+      );
+    }
+    Future<void>readValue(String key) async {
+     // url = (await _secureStorage.read(key: v))!;
+      String? stringOfItems = await _secureStorage.read(key: key);
+      // ignore: avoid_print
+      print (stringOfItems.toString());
+      
+    }  
   /// this widget will be use for each digit
   Widget numButton(int number) {
     return Padding(
@@ -182,7 +199,14 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
   }
 }
 
+class MyPinPage extends StatelessWidget {
+  const MyPinPage({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
 
 
 
