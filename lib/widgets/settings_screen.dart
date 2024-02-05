@@ -19,30 +19,17 @@ class _SettingsViewState extends State<SettingsView>{
     final TextEditingController _keepAliveTextController = TextEditingController();
     final TextEditingController _prefixTextController = TextEditingController();
 
-    //final Future _url = Settings.getSettingsValue('url').then(value);
-    // final String _url = "srv2.clusterfly.ru";
-    // final String _portValue = "9991";
-    // final String _userName = "user_f73fd7c4";
-    // final String _password = "pass_722e37c7";
-    // final String _keepAlive = "60";
-    // final String _prefix = "60";
-
+    
     final box = Hive.box('SettingsBox');  
 
-  Future<void> setValue(String key) async {
-    await box.put(key, _hostTextController.text);
+  Future<void> setValue(String key, String text) async {
+    await box.put(key, text);
   }
 
   Future<String> getValue(String key) async {
     final value = box.get(key, defaultValue: '*');
     return value;
   }
-
-  // Future<void> getValue2() async {
-  //   final value2 = box.get("url", defaultValue: '*') as String;
-  //   print(value2);
-    
-  // }
 
     @override
     void initState() {
@@ -53,13 +40,7 @@ class _SettingsViewState extends State<SettingsView>{
       getValue("password").then((value) => _passTextController.text=value);
       getValue("ioTimeout").then((value) => _ioTimeoutTextController.text=value);
       getValue("keepAlive").then((value) => _keepAliveTextController.text=value);
-      getValue("prefix").then((value) => _prefixTextController.text=value);
-      // _hostTextController.text = _url;
-      // _portTextController.text = _portValue; 
-      // _userTextController.text = _userName;  
-      // _passTextController.text = _password; 
-      // _keepAliveTextController.text = _keepAlive;
-      // _prefixTextController.text = _prefix;
+      getValue("prefix").then((value) => _prefixTextController.text=value);      
     }
 
     @override
@@ -88,22 +69,43 @@ class _SettingsViewState extends State<SettingsView>{
               _buildTextFieldWith(_portTextController, 'Port'),
               _buildTextFieldWith(_userTextController, 'UserName'),
               _buildTextFieldWith(_passTextController, 'Password'),
-              _buildTextFieldWith(_keepAliveTextController, 'IoTimeout'),
+              _buildTextFieldWith(_ioTimeoutTextController, 'IoTimeout'),
               _buildTextFieldWith(_keepAliveTextController, 'KeepAlive'),
               _buildTextFieldWith(_prefixTextController, 'Prefix'),
-              const SizedBox(height: 25.0,),
-              TextButton(
-                                
-                child: const Text('Save'),
-                onPressed: () {
-                  setValue("url");
-                  setValue("port");
-                  setValue("user");
-                  setValue("password");
-                  setValue("ioTimeout");
-                  setValue("keepAlive");
-                  setValue("prefix");
+              const SizedBox(height: 25.0),
+              InkWell(
+                onTap: () {
+                  setValue("url",_hostTextController.text);
+                  setValue("port",_portTextController.text);
+                  setValue("user",_userTextController.text);
+                  setValue("password",_passTextController.text);
+                  setValue("ioTimeout",_ioTimeoutTextController.text);
+                  setValue("keepAlive",_keepAliveTextController.text);
+                  setValue("prefix",_prefixTextController.text);
+                  Navigator.pop(context);
                 },
+                child: Container(
+                  decoration:  BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    border: Border.all(
+                              color: const Color.fromARGB(255, 92, 166, 226),
+                              width: 2,
+                          ),
+                    borderRadius: const BorderRadius.horizontal(
+                      right: Radius.circular(60),
+                      left: Radius.circular(60),
+                      ),
+                    color: const Color.fromARGB(255, 255, 255, 255)),
+                  height: 50,
+                  width: 95,
+                  child: const Center(
+                    child: Text("Save",
+                    style: TextStyle(
+                      fontSize: 28,
+                      color: Color.fromARGB(255, 92, 166, 226),
+                    ))
+                  ),
+                ),
               ),
             ],
           ),
@@ -111,11 +113,8 @@ class _SettingsViewState extends State<SettingsView>{
       );
     }
   }
-  
+ 
 
-  
-  
-  
 
 
 Widget _buildTextFieldWith(TextEditingController controller, String hintText) {
