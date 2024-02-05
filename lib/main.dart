@@ -1,5 +1,6 @@
 import 'package:app_mqtt/widgets/refresh_screen.dart';
 import 'package:flutter/material.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:app_mqtt/state/MQTTAppState.dart';
 import 'widgets/home_screen.dart';
@@ -8,8 +9,15 @@ import 'widgets/map_screen.dart';
 import 'widgets/pin_screen.dart';
 import 'widgets/home_screen_1.dart';
 import 'widgets/topic_set.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() => runApp(const MyApp());
+
+
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox('SettingsBox');  
+  runApp(const MyApp());
+  }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -35,7 +43,7 @@ class MyApp extends StatelessWidget {
               create: (_) => MQTTAppState(),
               child: const MQTTView(),
             ),
-          '/ref': (context) => const RefVariant(),
+          '/ref': (context) =>  OnePage(),
           '/MyPage': (context) => const MyHomePage(), 
           '/settings': (context) =>  SettingsView(),
           '/map': (context) => const MapView(),
