@@ -7,6 +7,8 @@ class SettingsView extends StatefulWidget {
 
   @override
   _SettingsViewState createState() => _SettingsViewState();
+
+  getValue(String s) {}
 }
 
 class _SettingsViewState extends State<SettingsView>{

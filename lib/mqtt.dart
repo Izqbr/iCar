@@ -1,8 +1,14 @@
+// import 'package:app_mqtt/redux/actions.dart';
+// import 'package:app_mqtt/redux/app_state.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_redux/flutter_redux.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:app_mqtt/state/MQTTAppState.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+// import 'package:redux/redux.dart';
 
 class MQTTManager {
+  // final Store<AppStateRedux> store = StoreProvider.of<AppStateRedux>();
   // Private instance of client
   final MQTTAppState _currentState;
   MqttServerClient? _client;
@@ -11,6 +17,7 @@ class MQTTManager {
   final int _port;
   final String _user;
   final String _pass;
+  final String _keepAlive;
   final String _topic;
 
   // Constructor
@@ -20,6 +27,7 @@ class MQTTManager {
       required int port,
       required String user,
       required String pass,
+      required String keepAlive,
       required String topic,
       required String identifier,
       required MQTTAppState state
@@ -30,13 +38,14 @@ class MQTTManager {
         _port = port,
         _user = user,
         _pass = pass,
+        _keepAlive = keepAlive,
         _topic = topic,
         _currentState = state;
 
   void initializeMQTTClient() {
     _client = MqttServerClient(_host, _identifier);
     _client!.port = _port;
-    _client!.keepAlivePeriod = 60;
+    _client!.keepAlivePeriod = int.parse(_keepAlive);
     _client!.onDisconnected = onDisconnected;
     _client!.secure = false;
     _client!.setProtocolV311();
@@ -76,10 +85,10 @@ class MQTTManager {
     _client!.disconnect();
   }
 
-  void publish(String message) {
+  void publish(String top, String message) {
     final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
     builder.addString(message);
-    _client!.publishMessage(_topic, MqttQos.exactlyOnce, builder.payload!);
+    _client!.publishMessage(top, MqttQos.exactlyOnce, builder.payload!);
   }
 
   /// The subscribed callback
@@ -100,21 +109,83 @@ class MQTTManager {
   /// The successful connect callback
   void onConnected() {
     _currentState.setAppConnectionState(MQTTAppConnectionState.connected);
-    print('EXAMPLE::Mosquitto client connected....');
-    _client!.subscribe(_topic, MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/ds0', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/ds1', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/ds2', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/ds3', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/vbat', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/timer', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/security', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/engine', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/uptime', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/ussl', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/ussd', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/rssi', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/C', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/CF', MqttQos.atLeastOnce);
+    // _client!.subscribe('user_f73fd7c4/C5/uptime', MqttQos.atLeastOnce);
     _client!.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
       // ignore: avoid_as
-      final MqttPublishMessage recMess = c![0].payload as MqttPublishMessage;
+      // final MqttPublishMessage recMess = c![0].payload as MqttPublishMessage;
+      // final MqttPublishMessage recMess1 = c[1].payload as MqttPublishMessage;
+      // final MqttPublishMessage recMess2 = c[2].payload as MqttPublishMessage;
+      // final MqttPublishMessage recMess3 = c[3].payload as MqttPublishMessage;
+      // final MqttPublishMessage recMess4 = c[4].payload as MqttPublishMessage;
+      // final MqttPublishMessage recMess5 = c[5].payload as MqttPublishMessage;
+      // final MqttPublishMessage recMess6 = c[6].payload as MqttPublishMessage;
+      // final MqttPublishMessage recMess7 = c[7].payload as MqttPublishMessage;
+      // final MqttPublishMessage recMess8 = c[8].payload as MqttPublishMessage;
 
       // final MqttPublishMessage recMess = c![0].payload;
-      final String pt =
-          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-      _currentState.setReceivedText(pt);
-      print(
-          'EXAMPLE::Change notification:: topic is <${c[0].topic}>, payload is <-- $pt -->');
-      print('');
-    });
-    print(
-        'EXAMPLE::OnConnected client callback - Client connection was sucessful');
+      // final String pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+      // final String pt1 = MqttPublishPayload.bytesToStringAsString(recMess1.payload.message);
+      // final String pt2 = MqttPublishPayload.bytesToStringAsString(recMess2.payload.message);
+      // final String pt3 = MqttPublishPayload.bytesToStringAsString(recMess3.payload.message);
+      // final String pt4 = MqttPublishPayload.bytesToStringAsString(recMess4.payload.message);
+      // final String pt5 = MqttPublishPayload.bytesToStringAsString(recMess5.payload.message);
+      // final String pt6 = MqttPublishPayload.bytesToStringAsString(recMess6.payload.message);
+      // final String pt7 = MqttPublishPayload.bytesToStringAsString(recMess7.payload.message);
+      // final String pt8 = MqttPublishPayload.bytesToStringAsString(recMess8.payload.message);
+      
+      // _currentState.setReceivedText(pt);
+
+      // store.dispatch(SetVbatAction(vbat: pt4));
+      // print(
+      //   'EXAMPLE::Change notification:: topic is <${c[0].topic}>, payload is <-- $pt -->');
+      final recMess = c![0].payload as MqttPublishMessage;
+      final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+      print('Received message: topic is ${c[0].topic}, payload is $pt');
+
+      switch(c[0].topic){
+        case 'user_f73fd7c4/C5/ds0':
+          return _currentState.setDs0(pt);
+        case 'user_f73fd7c4/C5/ds1':
+          return _currentState.setDs1(pt);
+        case 'user_f73fd7c4/C5/ds2':
+          return _currentState.setDs2(pt);
+        case 'user_f73fd7c4/C5/ds3':
+          return _currentState.setDs3(pt); 
+        case 'user_f73fd7c4/C5/vbat':
+          return _currentState.setVbat(pt);       
+        case 'user_f73fd7c4/C5/timer':
+          return _currentState.setTimer(pt);
+        case 'user_f73fd7c4/C5/security':
+          return _currentState.setSecurity(pt); 
+        case 'user_f73fd7c4/C5/engine':
+          return _currentState.setEngine(pt); 
+        case 'user_f73fd7c4/C5/uptime':
+          return _currentState.setUptime(pt); 
+        case 'user_f73fd7c4/C5/ussl':
+          return _currentState.setUssl(pt);
+        case 'user_f73fd7c4/C5/ussd':
+          return _currentState.setUssd(pt); 
+        case 'user_f73fd7c4/C5/rssi':
+          return _currentState.setRssi(pt);
+        case 'user_f73fd7c4/C5/C':
+          return _currentState.setC(pt);
+        case 'user_f73fd7c4/C5/CF':
+          return _currentState.setCF(pt);                    
+      }
+    });    
   }
 }

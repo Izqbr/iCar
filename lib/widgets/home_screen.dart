@@ -1,291 +1,429 @@
 //import 'package:app_mqtt/main.dart';
-import 'dart:io' show Platform;
+// import 'package:app_mqtt/redux/app_state.dart';
+// import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_mqtt/mqtt.dart';
 import 'package:app_mqtt/state/MQTTAppState.dart';
-//import 'package:storage/store.dart';
-// import 'package:mqtt_client/mqtt_client.dart';
+ 
+//   final String _url = "srv2.clusterfly.ru";
+//   final String _portValue = "9991";
+//   final String _userName = "user_f73fd7c4";
+//   final String _password = "pass_722e37c7";
 
-class MQTTView extends StatefulWidget {
-  const MQTTView({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return _MQTTViewState();
-  }
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _MQTTViewState extends State<MQTTView> {
-  final TextEditingController _hostTextController = TextEditingController();
-  final TextEditingController _portTextController = TextEditingController();
-  final TextEditingController _userTextController = TextEditingController();
-  final TextEditingController _passTextController = TextEditingController();
-  final TextEditingController _messageTextController = TextEditingController();
-  final TextEditingController _topicTextController = TextEditingController();
+class _HomeViewState extends State<HomeView> {
+
   late MQTTAppState currentAppState;
   late MQTTManager manager;
- // late ExampleModel storage; 
-
-  final String _url = "srv2.clusterfly.ru";
-  final String _portValue = "9991";
-  final String _userName = "user_f73fd7c4";
-  final String _password = "pass_722e37c7";
 
   @override
   void initState() {
     super.initState();
-    _hostTextController.text = _url;
-    _portTextController.text = _portValue; 
-    _userTextController.text = _userName;  
-    _passTextController.text = _password; 
-    /*
-    _hostTextController.addListener(_printLatestValue);
-    _messageTextController.addListener(_printLatestValue);
-    _topicTextController.addListener(_printLatestValue);
-
-     */
+    
+    
   }
 
   @override
   void dispose() {
-    _hostTextController.dispose();
-    _portTextController.dispose();
-    _userTextController.dispose();
-    _passTextController.dispose();
-    _messageTextController.dispose();
-    _topicTextController.dispose();
+    
     super.dispose();
   }
 
-  /*
-  _printLatestValue() {
-    print("Second text field: ${_hostTextController.text}");
-    print("Second text field: ${_messageTextController.text}");
-    print("Second text field: ${_topicTextController.text}");
-  }
-
-   */
 
   @override
   Widget build(BuildContext context) {
+    
     final MQTTAppState appState = Provider.of<MQTTAppState>(context);
     // Keep a reference to the app state.
     currentAppState = appState;
-    final Scaffold scaffold = Scaffold(body: _buildColumn());
-    return scaffold;
-  }
-
-  Widget _buildAppBar(BuildContext context) {
-    return AppBar(
-      title: const Text('MQTT'),
-      backgroundColor: Colors.greenAccent,
-    );
-  }
-
-  Widget _buildColumn() {
-    return Column(
-      children: <Widget>[
-        _buildConnectionStateText(
-            _prepareStateMessageFrom(currentAppState.getAppConnectionState)),
-        _buildEditableColumn(),
-        _buildScrollableTextWith(currentAppState.getHistoryText)
-      ],
-    );
-  }
-
-  Widget _buildEditableColumn() {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-            _settings(),
-            _map(),
-            _homePage()
-          ],),
-          
-          _buildTextFieldWith(_hostTextController, 'Enter broker address',
-              currentAppState.getAppConnectionState),
-          const SizedBox(height: 2),
-          _textField(),
-          const SizedBox(height: 2),
-          _buildTextFieldWith(
-              _topicTextController,
-              'Enter a topic to subscribe or listen',
-              currentAppState.getAppConnectionState),
-          const SizedBox(height: 10),
-          _buildPublishMessageRow(),
-          const SizedBox(height: 10),
-          _buildConnecteButtonFrom(currentAppState.getAppConnectionState)
-        ],
+    return Scaffold(
+      appBar: AppBar(  
+        centerTitle: true,     
+        backgroundColor: const Color.fromARGB(255, 92, 166, 226),
+        title: const Text(
+                      "iCar_v5",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 26,
+                      ),
+                    ),
+        actions: _onOff(currentAppState.getAppConnectionState),           
       ),
-    );
-  }
-
-  Widget _buildPublishMessageRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Expanded(
-          child: _buildTextFieldWith(_messageTextController, 'Enter a message',
-              currentAppState.getAppConnectionState),
+      drawer:  Drawer(
+        shadowColor: Colors.amberAccent,
+        surfaceTintColor: Color.fromARGB(255, 68, 180, 255),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children:  <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Header'),
+            ),
+            ListTile(
+              title: const Text('MQTT Settings'),
+              leading: const Icon(
+                Icons.settings,
+              ),
+              onTap: () => Navigator.pushNamed(context, '/settings'),
+            ),
+            ListTile(
+              title: const Text('Topic'),
+              leading: const Icon(
+                Icons.settings,
+              ),
+              onTap: () => Navigator.pushNamed(context, '/topic'),
+            ),
+            ListTile(
+              title: const Text('Alarm Settings'),
+              leading: const Icon(
+                Icons.settings,
+              ),
+              onTap: () => Navigator.pushNamed(context, '/settings'),
+            ),
+            ListTile(
+              title: const Text('Настройки4'),
+              leading: const Icon(
+                Icons.settings,
+              ),
+              onTap: () => Navigator.pushNamed(context, '/settings'),
+            ),
+          ],
         ),
-        _buildSendButtonFrom(currentAppState.getAppConnectionState)
-      ],
+      ),
+      body: RefreshIndicator(
+        color: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 92, 166, 226),
+        onRefresh: refreshComand, 
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverFillRemaining(
+            child: Column(
+              children: [
+                _buildConnectionStateText(
+                  _prepareStateMessageFrom(currentAppState.getAppConnectionState),currentAppState.getAppConnectionState),
+                
+                Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 10.0,
+                      top: 10.0,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 2),
+                        color:  const Color.fromARGB(255, 255, 255, 255),
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        onPressed: (){
+                          _publishMessage('user_f73fd7c4/C5', 'comandlocation');
+                        },
+                        iconSize: 40,
+                        icon: const Icon(Icons.location_on, 
+                        color: Color.fromARGB(255, 207, 20, 6)
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text('Локация'),
+                ],
+              ),
+                // СИМ КАРТА
+                Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 10.0,
+                      top: 10.0,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 2),
+                        color:  const Color.fromARGB(255, 255, 255, 255),
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        onPressed: (){
+                          _publishMessage('user_f73fd7c4/C5', 'comandbalans');
+                        },
+                        iconSize: 40,
+                        icon: const Icon(Icons.sim_card, 
+                        color: Color.fromARGB(255, 247, 243, 14)
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text('99р'),
+                ],
+              ),
+                // Центр
+                Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Padding(
+                  padding:  const EdgeInsets.only(left: 20.0,right: 20.0),
+                  child: Stack(
+                    alignment: AlignmentDirectional.center,
+                    textDirection: TextDirection.ltr,
+                    children: <Widget>[
+                      Image.asset("assets/img/car_full_body_square.png"),
+                      Positioned(
+                        left: 40.0,
+                        bottom: 32.0,
+                        // bottom: 0.0,
+                        // right: 0.0,
+                        child: SizedBox(
+                          width: 35,
+                          height: 35,
+                          //color: const Color.fromARGB(255, 86, 140, 201),
+                          child: Image.asset("assets/img/bat.png")
+                        ),
+                      ),
+                      Positioned(
+                        left: 40.0,
+                        bottom: 20.0,
+                        // bottom: 0.0,
+                        // right: 0.0,
+                        child: Text('${currentAppState.getVbat}v'),
+                      ),
+                      Positioned(
+                        top: 70.0,
+                        left: 150.0,
+                        bottom: 30.0,
+                        // bottom: 0.0,
+                        // right: 0.0,
+                        child: SizedBox(
+                          width: 35,
+                          height: 35,
+                          //color: const Color.fromARGB(255, 86, 140, 201),
+                          child: Image.asset("assets/img/term.png")
+                        ),
+                      ),
+                      Positioned(
+                        // left: 40.0,
+                        // bottom: 32.0,
+                         top: 26.0,
+                        right: 75.0,
+                        child: IconButton(
+                          color: const Color.fromARGB(255, 92, 166, 226),
+                          icon: const Icon(Icons.timer,size: 40.0), 
+                          onPressed: ()  => newMethod(context),
+                        ),
+                      ),
+                      Positioned(
+                         //left: 0,
+                        // bottom: 32.0,
+                        //  top: 26.0,
+                         right: -8,
+                        child: RotatedBox(
+                          quarterTurns: 3,
+                          child: IconButton(
+                            color: const Color.fromARGB(255, 92, 166, 226),
+                            icon: const Icon(Icons.key,size: 35.0), 
+                            onPressed: () {}, //=> newMethod(context),
+                          ),
+                        ),
+                      ),
+                      const Positioned(
+                        // left: 40.0,
+                         bottom: 39.0,
+                        //  top: 26.0,
+                          right: 115.0,
+                        child: Text('25°С',style: TextStyle(
+                            fontSize: 22,
+                          ),
+                        )
+                        
+                      ),
+                    ],
+                    
+                  ),
+                ),
+              ],
+            ),
+                ),
+                // ИНДИКАТОРЫ ТОРМОЗА И КПП
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Image.asset(
+                        "assets/img/camper_status_brake_dark.png",
+                        height: 30,
+                        //width: 50,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Image.asset(
+                        "assets/img/camper_status_parking_dark.png",
+                        height: 30,
+                        //width: 50,
+                      ),
+                    ),
+                  ],
+                ),
+            
+                const SizedBox(
+                  height: 5,
+                ),
+                Container(
+                height: 30,
+                color: const Color.fromARGB(125, 224, 201, 201),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [                    
+                    _viewInfoText(currentAppState.getRssi,'${currentAppState.getRssi}dB'),
+                    // _viewInfoText(currentAppState.getVbat,'${currentAppState.getVbat}v'),
+                    _viewInfoText(currentAppState.getC,'C:${currentAppState.getC}'),
+                    _viewInfoText(currentAppState.getCF,'CF:${currentAppState.getCF}'),
+                    Row(children: [
+                        const Icon(Icons.thermostat_outlined),
+                      _viewInfoText(currentAppState.getDs0,'${currentAppState.getDs0}°C'),
+                     ],
+                    ),
+                    
+                    _viewInfoText(currentAppState.getDs1,'${currentAppState.getDs1}°C'),
+                    _viewInfoText(currentAppState.getDs2,'${currentAppState.getDs2}°C'),
+                    _viewInfoText(currentAppState.getDs3,'${currentAppState.getDs3}°C'),
+                  ],
+                ),
+              ),
+                // нижние кнопки
+              Row(
+                children: [
+                  Expanded(
+                    flex:2,
+                    child: Column(
+                      children: <Widget>[
+                        IconButton(
+                          onPressed: (){}, 
+                          icon: const Icon(Icons.thermostat_auto_outlined,size: 50.0,color: Color.fromARGB(255, 92, 166, 226)),
+                          ),
+                        Container(
+                          width: 150,
+                          height: 2,
+                          color: const Color.fromARGB(255, 92, 166, 226),
+                        ),  
+                        IconButton(
+                          onPressed: (){}, 
+                          icon: const Icon(Icons.surround_sound_outlined ,size: 50.0,color: Color.fromARGB(255, 92, 166, 226)),
+                          ),
+                      ],
+                    )
+                  ),
+              
+                _startButton(currentAppState.getAppConnectionState),
+                Expanded(
+              flex:2,
+              child: Column(
+                children: <Widget>[
+                  IconButton(
+                    onPressed: (){}, 
+                    icon: const Icon(Icons.lock_outline,size: 50.0,color: Color.fromARGB(255, 92, 166, 226)),
+                    ),
+                    Container(
+                    width: 150,
+                    height: 2,
+                    color: const Color.fromARGB(255, 92, 166, 226),
+                  ), 
+                    IconButton(
+                    onPressed: (){},
+                    icon: const Icon(Icons.lock_open,
+                    size: 50.0,color: Color.fromARGB(255, 92, 166, 226)
+                    ),
+                    ),
+                    
+                ],
+              )
+                      ),
+                    ],
+                  ),
+               
+              
+              ],
+            ),
+          ),
+          ]
+        ),
+      )
     );
+    
   }
 
-  Widget _buildConnectionStateText(String status) {
-    return Row(
+  Future<void> refreshComand() async {
+    _publishMessage('user_f73fd7c4/C5', 'comandRefresh');
+    Future.delayed(const Duration(seconds: 4));
+    }
+
+  List<Widget> _onOff(MQTTAppConnectionState state) {
+    return  <Widget>[
+        IconButton(
+          icon: const Icon(
+            Icons.power_settings_new,
+          size: 40, 
+          color:  Color.fromARGB(255, 255, 255, 255),
+        ),
+          onPressed: state == MQTTAppConnectionState.disconnected
+                 ? _configureAndConnect
+                 : _disconnect,
+          
+        )
+
+      ];
+  }
+
+  Widget _buildConnectionStateText(String status,MQTTAppConnectionState state) {
+    switch (state) {
+      case MQTTAppConnectionState.connected:
+        return Row(
       children: <Widget>[
         Expanded(
           child: Container(
-              color: Colors.deepOrangeAccent,
+              color: const Color.fromARGB(255, 133, 255, 52),
               child: Text(status, textAlign: TextAlign.center)),
         ),
       ],
     );
-  }
-
-  Widget _buildTextFieldWith(TextEditingController controller, String hintText,
-      MQTTAppConnectionState state) {
-    bool shouldEnable = false;
-    if (controller == _messageTextController &&
-        state == MQTTAppConnectionState.connected) {
-      shouldEnable = true;
-    } else if ((controller == _hostTextController &&
-            state == MQTTAppConnectionState.disconnected) ||
-        (controller == _topicTextController &&
-            state == MQTTAppConnectionState.disconnected)) {
-      shouldEnable = true;
-    }
-    return TextField(
-        enabled: shouldEnable,
-        controller: controller,
-        decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.only(left: 0, bottom: 0, top: 0, right: 0),
-          labelText: hintText,
-        ));
-  }
-
-  Widget _textField(){
-    return Column(
-      children: [
-        TextField(
-        enabled: true,
-        controller: _portTextController ,
-        decoration: const InputDecoration(
-          contentPadding:
-              EdgeInsets.only(left: 0, bottom: 0, top: 0, right: 0),
-          labelText: "port",
-          )
-        ),
-        TextField(
-        enabled: true,
-        controller: _userTextController ,
-        decoration: const InputDecoration(
-          contentPadding:
-              EdgeInsets.only(left: 0, bottom: 0, top: 0, right: 0),
-          labelText: "user",
-          )
-        ),
-        TextField(
-        enabled: true,
-        controller: _passTextController ,
-        decoration: const InputDecoration(
-          contentPadding:
-              EdgeInsets.only(left: 0, bottom: 0, top: 0, right: 0),
-          labelText: "password",
-          )
-        ),
-      ],
-    );
-  }
-
-  Widget _buildScrollableTextWith(String text) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        width: 400,
-        height: 200,
-        child: SingleChildScrollView(
-          child: Text(text),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildConnecteButtonFrom(MQTTAppConnectionState state) {
-    return Row(
+      case MQTTAppConnectionState.connecting:
+        return Row(
       children: <Widget>[
         Expanded(
-          // ignore: deprecated_member_use
-          child: TextButton(
-            //color: Colors.lightBlueAccent,
-            child: const Text('Connect'),
-            onPressed: state == MQTTAppConnectionState.disconnected
-                ? _configureAndConnect
-                : null, //
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          // ignore: deprecated_member_use
-          child: TextButton(
-            //color: Colors.redAccent,
-            child: const Text('Disconnect'),
-            onPressed: state == MQTTAppConnectionState.connected
-                ? _disconnect
-                : null, //
-          ),
+          child: Container(
+              color: const Color.fromARGB(255, 255, 252, 82),
+              child: Text(status, textAlign: TextAlign.center)),
         ),
       ],
     );
+      case MQTTAppConnectionState.disconnected:
+        return Row(
+      children: <Widget>[
+        Expanded(
+          child: Container(
+              color: const Color.fromARGB(255, 255, 36, 36),
+              child: Text(status, textAlign: TextAlign.center)),
+        ),
+      ],
+    );
+    }
+    
   }
 
-  Widget _buildSendButtonFrom(MQTTAppConnectionState state) {
-    // ignore: deprecated_member_use
-    return TextButton(
-      //color: Colors.green,
-      child: const Text('Send'),
-      onPressed: state == MQTTAppConnectionState.connected
-          ? () {
-              _publishMessage(_messageTextController.text);
-            }
-          : null, //
-    );
-  }
-
-  Widget _settings(){
-    return IconButton(
-      icon: const Icon(Icons.settings),
-      onPressed:  (){
-        Navigator.pushNamed(context,'/settings');
-      },
-    );
-  }
-
-  Widget _map(){
-    return IconButton(
-      icon: const Icon(Icons.map),
-      onPressed:  (){
-        Navigator.pushNamed(context,'/map');
-      },
-    );
-  }
-  Widget _homePage(){
-    return IconButton(
-      icon: const Icon(Icons.settings),
-      onPressed:  (){
-        Navigator.pushNamed(context,'/MyPage');
-      },
-    );
-  }
-  // Utility functions
   String _prepareStateMessageFrom(MQTTAppConnectionState state) {
     switch (state) {
       case MQTTAppConnectionState.connected:
@@ -296,26 +434,140 @@ class _MQTTViewState extends State<MQTTView> {
         return 'Disconnected';
     }
   }
-  
 
+  Widget _startButton(MQTTAppConnectionState state) {
+    switch (state) {
+      case MQTTAppConnectionState.connected:
+        return SizedBox(
+              width: 130,
+              height: 130,
+              child: MaterialButton(
+                shape: const CircleBorder(
+                side: BorderSide(
+                  width: 4,
+                  color: Color.fromARGB(255, 92, 166, 226),
+                  style: BorderStyle.solid,
+                ),
+              ),
+              color: const Color.fromARGB(255, 255, 255, 255),
+              textColor: const Color.fromARGB(255, 12, 207, 55),
+              onPressed: (){
+                _publishMessage('user_f73fd7c4/C5','comandstart');
+              },
+              child:  const Text("Start", 
+                style: TextStyle(
+        fontSize: 32.0,
+        fontWeight: FontWeight.bold
+        )
+                ),
+              ),
+            );
+      case MQTTAppConnectionState.connecting:
+        return const SizedBox(
+              width: 130,
+              height: 130,
+              child: MaterialButton(
+                shape: CircleBorder(
+                side: BorderSide(
+                  width: 4,
+                  color: Color.fromARGB(255, 92, 166, 226),
+                  style: BorderStyle.solid,
+                ),
+              ),
+              color: Color.fromARGB(255, 187, 94, 94),
+              textColor:  Color.fromARGB(255, 81, 54, 201),
+              onPressed: null,
+              child:  Text("Wait", 
+                style: TextStyle(
+        fontSize: 32.0,
+        fontWeight: FontWeight.bold
+        )
+                ),
+              ),
+            );
+      case MQTTAppConnectionState.disconnected:
+        return const SizedBox(
+              width: 130,
+              height: 130,
+              child: MaterialButton(
+                shape: CircleBorder(
+                side: BorderSide(
+                  width: 4,
+                  color: Color.fromARGB(255, 92, 166, 226),
+                  style: BorderStyle.solid,
+                ),
+              ),
+              color: Color.fromARGB(255, 255, 255, 255),
+              textColor: Color.fromARGB(255, 157, 158, 157),
+              onPressed: null,
+              child:  Text("Start", 
+                style: TextStyle(
+        fontSize: 32.0,
+        fontWeight: FontWeight.bold
+        )
+                ),
+              ),
+            );
+    }
+  }
 
+  Future<String?> newMethod(BuildContext context) {
+    return showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Set Timer'),
+                    content: const SliderExample(),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Set',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 92, 166, 226),
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                          )
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+  }
 
+  Widget _viewInfoText(String state, String text) {
+    if (state == '') {
+      
+      return  Visibility(
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              visible: false,
+              child: Text(text),
+            );
+    } else {
+      return  Visibility(
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              visible: true,
+              child: Text(text),
+            );
+    }
+  }
 
   void _configureAndConnect() {
     // ignore: flutter_style_todos
     // TODO: Use UUID
     String osPrefix = 'Flutter_iOS';
-    if (Platform.isAndroid) {
-      osPrefix = 'Flutter_Android';
-    }
+    
     manager = MQTTManager(
-        host: _hostTextController.text,
-        port: int.parse(_portTextController.text),
-        user: _userTextController.text,
-        pass: _passTextController.text,
-        topic: _topicTextController.text,
+        host: 'srv2.clusterfly.ru',//_hostTextController.text,
+        port: 9991,//int.parse(_portTextController.text),
+        user: 'user_f73fd7c4',//_userTextController.text,
+        pass: 'pass_722e37c7',
+        topic: 'user_f73fd7c4/c5',
         identifier: osPrefix,
-        state: currentAppState);
+        state: currentAppState, 
+        keepAlive: '60');
     manager.initializeMQTTClient();
     manager.connect();
   }
@@ -324,11 +576,38 @@ class _MQTTViewState extends State<MQTTView> {
     manager.disconnect();
   }
 
-  void _publishMessage(String text) {
-    String osPrefix = 'Flutter_Android';
+  void _publishMessage(String top, String text) {
+    manager.publish(top, text);    
+  }
+}
+
+class SliderExample extends StatefulWidget {
+  const SliderExample({super.key});
+
+  @override
+  State<SliderExample> createState() => _SliderExampleState();
+}
+
+class _SliderExampleState extends State<SliderExample> {
+  double _currentSliderValue = 10;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 75,
+      child: Slider(
+          activeColor: const Color.fromARGB(255, 92, 166, 226),
+          value: _currentSliderValue,
+          max: 30.0,
+          divisions: 30,
+          label: _currentSliderValue.round().toString(),
+          onChanged: (double value) {
+            setState(() {
+              _currentSliderValue = value;
+            });
+          },
+        ),
+    );
     
-    final String message = '$osPrefix says: $text';
-    manager.publish(message);
-    _messageTextController.clear();
   }
 }

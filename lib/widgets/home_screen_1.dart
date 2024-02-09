@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 
 
@@ -70,6 +71,7 @@ class MyHomePage extends StatelessWidget {
           ],
         ),
       ),
+      
       body:  SafeArea(
           child: Column(
             
@@ -169,10 +171,13 @@ class MyHomePage extends StatelessWidget {
               Container(
                 height: 30,
                 color: const Color.fromARGB(125, 224, 201, 201),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text('GSM'),
+                    StoreConnector<int,int>(
+                      converter: (store) => store.state,
+                      builder: (context, state) => Text(state.toString())
+                    ),
                     Text('data2'),
                     Text('data3'),
                   ],
@@ -266,9 +271,10 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  Future<void> _refresh() { 
-    return Future.delayed(const Duration(seconds: 4));
-  }
+  // Future<void> _refresh() { 
+  //   return Future.delayed(const Duration(seconds: 4));
+  // }
+  
 }
 
 class CenterImage extends StatelessWidget {
