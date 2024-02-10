@@ -123,35 +123,10 @@ class MQTTManager {
     _client!.subscribe('user_f73fd7c4/C5/rssi', MqttQos.atLeastOnce);
     _client!.subscribe('user_f73fd7c4/C5/C', MqttQos.atLeastOnce);
     _client!.subscribe('user_f73fd7c4/C5/CF', MqttQos.atLeastOnce);
-    // _client!.subscribe('user_f73fd7c4/C5/uptime', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/bracke', MqttQos.atLeastOnce);
+    _client!.subscribe('user_f73fd7c4/C5/gearbox', MqttQos.atLeastOnce);
     _client!.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
-      // ignore: avoid_as
-      // final MqttPublishMessage recMess = c![0].payload as MqttPublishMessage;
-      // final MqttPublishMessage recMess1 = c[1].payload as MqttPublishMessage;
-      // final MqttPublishMessage recMess2 = c[2].payload as MqttPublishMessage;
-      // final MqttPublishMessage recMess3 = c[3].payload as MqttPublishMessage;
-      // final MqttPublishMessage recMess4 = c[4].payload as MqttPublishMessage;
-      // final MqttPublishMessage recMess5 = c[5].payload as MqttPublishMessage;
-      // final MqttPublishMessage recMess6 = c[6].payload as MqttPublishMessage;
-      // final MqttPublishMessage recMess7 = c[7].payload as MqttPublishMessage;
-      // final MqttPublishMessage recMess8 = c[8].payload as MqttPublishMessage;
-
-      // final MqttPublishMessage recMess = c![0].payload;
-      // final String pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-      // final String pt1 = MqttPublishPayload.bytesToStringAsString(recMess1.payload.message);
-      // final String pt2 = MqttPublishPayload.bytesToStringAsString(recMess2.payload.message);
-      // final String pt3 = MqttPublishPayload.bytesToStringAsString(recMess3.payload.message);
-      // final String pt4 = MqttPublishPayload.bytesToStringAsString(recMess4.payload.message);
-      // final String pt5 = MqttPublishPayload.bytesToStringAsString(recMess5.payload.message);
-      // final String pt6 = MqttPublishPayload.bytesToStringAsString(recMess6.payload.message);
-      // final String pt7 = MqttPublishPayload.bytesToStringAsString(recMess7.payload.message);
-      // final String pt8 = MqttPublishPayload.bytesToStringAsString(recMess8.payload.message);
-      
-      // _currentState.setReceivedText(pt);
-
-      // store.dispatch(SetVbatAction(vbat: pt4));
-      // print(
-      //   'EXAMPLE::Change notification:: topic is <${c[0].topic}>, payload is <-- $pt -->');
+       
       final recMess = c![0].payload as MqttPublishMessage;
       final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
       print('Received message: topic is ${c[0].topic}, payload is $pt');
@@ -184,7 +159,11 @@ class MQTTManager {
         case 'user_f73fd7c4/C5/C':
           return _currentState.setC(pt);
         case 'user_f73fd7c4/C5/CF':
-          return _currentState.setCF(pt);                    
+          return _currentState.setCF(pt); 
+        case 'user_f73fd7c4/C5/bracke':
+          return _currentState.setBrackeStatus(pt); 
+        case 'user_f73fd7c4/C5/gearbox':
+          return _currentState.setGearboxStatus(pt);                       
       }
     });    
   }

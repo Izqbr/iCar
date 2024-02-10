@@ -19,6 +19,8 @@ class MQTTAppState with ChangeNotifier{
   String _rssi = '';
   String _c = '';
   String _cf = '';
+  String _bracke = 'lock0';
+  String _gearbox = 'neutral';
 
   void setDs0(String text){
     _ds0 = text;
@@ -76,8 +78,16 @@ class MQTTAppState with ChangeNotifier{
     _cf = text;
     notifyListeners();
   }
+  void setBrackeStatus(String text){
+    _bracke = text;
+    notifyListeners();
+  }
   void setAppConnectionState(MQTTAppConnectionState state) {
     _appConnectionState = state;
+    notifyListeners();
+  }
+  void setGearboxStatus(String text){
+    _gearbox = text;
     notifyListeners();
   }
   String get getDs0 => _ds0;
@@ -94,6 +104,8 @@ class MQTTAppState with ChangeNotifier{
   String get getRssi => _rssi;
   String get getC=> _c;
   String get getCF => _cf;
+  String get getBrackeStatus => _bracke;
+  String get getGearboxStatus => _gearbox;
   MQTTAppConnectionState get getAppConnectionState => _appConnectionState;
 
 }

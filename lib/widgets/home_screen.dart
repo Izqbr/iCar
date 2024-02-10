@@ -231,22 +231,8 @@ class _HomeViewState extends State<HomeView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Image.asset(
-                        "assets/img/camper_status_brake_dark.png",
-                        height: 30,
-                        //width: 50,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Image.asset(
-                        "assets/img/camper_status_parking_dark.png",
-                        height: 30,
-                        //width: 50,
-                      ),
-                    ),
+                    _brackeIcon(currentAppState.getAppConnectionState, currentAppState.getBrackeStatus),
+                    _gearboxIcon(currentAppState.getAppConnectionState, currentAppState.getGearboxStatus)
                   ],
                 ),
             
@@ -307,7 +293,7 @@ class _HomeViewState extends State<HomeView> {
                     )
                   ),
               
-                _startButton(currentAppState.getAppConnectionState),
+                _startButton(currentAppState.getAppConnectionState, currentAppState.getBrackeStatus, currentAppState.getGearboxStatus),
                 Expanded(
               flex:2,
               child: Column(
@@ -390,6 +376,7 @@ class _HomeViewState extends State<HomeView> {
                   );
     }
   }
+  
   Widget _simButton(MQTTAppConnectionState state){
     if (state == MQTTAppConnectionState.connected){
       return Padding(
@@ -506,11 +493,10 @@ class _HomeViewState extends State<HomeView> {
         return 'Disconnected';
     }
   }
-
-  Widget _startButton(MQTTAppConnectionState state) {
-    switch (state) {
-      case MQTTAppConnectionState.connected:
-        return SizedBox(
+  
+  Widget _startButton(MQTTAppConnectionState state, String state2, String state3){
+    if (state == MQTTAppConnectionState.connected && state2 == 'lock0' && state3 == 'neutral'){
+      return SizedBox(
               width: 130,
               height: 130,
               child: MaterialButton(
@@ -534,8 +520,8 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             );
-      case MQTTAppConnectionState.connecting:
-        return const SizedBox(
+    } else if (state == MQTTAppConnectionState.connecting){
+      return const SizedBox(
               width: 130,
               height: 130,
               child: MaterialButton(
@@ -557,8 +543,8 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             );
-      case MQTTAppConnectionState.disconnected:
-        return const SizedBox(
+    } else {
+      return const SizedBox(
               width: 130,
               height: 130,
               child: MaterialButton(
@@ -626,6 +612,68 @@ class _HomeViewState extends State<HomeView> {
     }
   }
   
+  Widget _brackeIcon(MQTTAppConnectionState state, String state2){
+    if(state == MQTTAppConnectionState.connected && state2 == 'lock0'){
+      return Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Image.asset(
+                "assets/img/brake_green.png",
+                height: 30,
+                //width: 50,
+              ),
+            );
+    } else if(state == MQTTAppConnectionState.connected && state2 == 'lock1'){
+      return Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Image.asset(
+                "assets/img/brake_red.png",
+                height: 30,
+                //width: 50,
+              ),
+            );
+  } else {
+      return Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Image.asset(
+                  "assets/img/brake_grey.png",
+                  height: 30,
+                  //width: 50,
+                ),
+              );
+  }
+}
+
+  Widget _gearboxIcon(MQTTAppConnectionState state, String state2){
+    if(state == MQTTAppConnectionState.connected && state2 == 'nonneutral'){
+      return Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Image.asset(
+                "assets/img/parking_red.png",
+                height: 30,
+                //width: 50,
+              ),
+            );
+    } else if(state == MQTTAppConnectionState.connected && state2 == 'neutral'){
+      return Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Image.asset(
+                "assets/img/parking_green.png",
+                height: 30,
+                //width: 50,
+              ),
+            );
+  } else {
+      return Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Image.asset(
+                  "assets/img/parking_grey.png",
+                  height: 30,
+                  //width: 50,
+                ),
+              );
+  }
+}
+
   Widget _lockButton(MQTTAppConnectionState state, String state2){
     if(state == MQTTAppConnectionState.connected && state2 == 'lock0') {
       return IconButton(          
