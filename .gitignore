@@ -53,6 +53,6 @@ macos/
 linux/
 ios/
 build/
-android/
+
 .idea/
 .dart_tool/

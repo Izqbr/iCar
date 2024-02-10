@@ -1,0 +1,55 @@
+buildscript {
+    ext.kotlin_version = '1.7.10'
+    repositories {
+        google()
+        mavenCentral()
+                                                                                      
+
+
+    }
+
+    dependencies {
+        //classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+// android {
+//   compileSdkVersion flutter.compileSdkVersion
+  
+//   defaultConfig {
+//     minSdkVersion flutter.minSdkVersion
+//     targetSdkVersion flutter.targetSdkVersion
+//     multiDexEnabled true
+//   }
+
+//   compileOptions {
+//     // Flag to enable support for the new language APIs
+//     coreLibraryDesugaringEnabled true
+//     // Sets Java compatibility to Java 8
+//     sourceCompatibility JavaVersion.VERSION_1_8
+//     targetCompatibility JavaVersion.VERSION_1_8
+//   }
+// }
+
+// dependencies {
+//   coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+// }

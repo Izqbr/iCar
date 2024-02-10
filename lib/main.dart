@@ -1,12 +1,12 @@
 // import 'package:app_mqtt/widgets/refresh_screen.dart';
-import 'package:app_mqtt/redux/app_state.dart';
-import 'package:app_mqtt/redux/reducers.dart';
+// import 'package:app_mqtt/redux/app_state.dart';
+// import 'package:app_mqtt/redux/reducers.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:app_mqtt/state/MQTTAppState.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
+// import 'package:flutter_redux/flutter_redux.dart';
+// import 'package:redux/redux.dart';
 import 'widgets/home_screen.dart';
 import 'widgets/settings_screen.dart';
 import 'widgets/map_screen.dart';
@@ -19,10 +19,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('SettingsBox');
-  final Store<AppStateRedux> store = Store(reducer,initialState: AppStateRedux(vbat: "14.3"));  
-  runApp(StoreProvider(store: store,
-    child: const MyApp()
-      )
+  // final Store<AppStateRedux> store = Store(reducer,initialState: AppStateRedux(vbat: "14.3"));  
+  runApp(const MyApp()
     );
   }
 
