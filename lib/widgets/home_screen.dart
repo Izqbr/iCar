@@ -48,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
         centerTitle: true,     
         backgroundColor: const Color.fromARGB(255, 92, 166, 226),
         title: const Text(
-                      "iCar_v5",
+                      "iCar_v5.2",
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
                         fontWeight: FontWeight.bold,
@@ -59,7 +59,7 @@ class _HomeViewState extends State<HomeView> {
       ),
       drawer:  Drawer(
         shadowColor: Colors.amberAccent,
-        surfaceTintColor: Color.fromARGB(255, 68, 180, 255),
+        surfaceTintColor: const Color.fromARGB(255, 68, 180, 255),
         child: ListView(
           padding: EdgeInsets.zero,
           children:  <Widget>[
@@ -113,61 +113,32 @@ class _HomeViewState extends State<HomeView> {
                   _prepareStateMessageFrom(currentAppState.getAppConnectionState),currentAppState.getAppConnectionState),
                 
                 Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10.0,
-                      top: 10.0,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue, width: 2),
-                        color:  const Color.fromARGB(255, 255, 255, 255),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        onPressed: (){
-                          _publishMessage('user_f73fd7c4/C5', 'comandlocation');
-                        },
-                        iconSize: 40,
-                        icon: const Icon(Icons.location_on, 
-                        color: Color.fromARGB(255, 207, 20, 6)
-                        ),
-                      ),
-                    ),
-                  ),
-                  Text('Локация'),
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                children: [                  
+                  _locationButton(currentAppState.getAppConnectionState),
+                  const SizedBox(width: 10),
+                  const Text('Geolocation'),
                 ],
               ),
                 // СИМ КАРТА
                 Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10.0,
-                      top: 10.0,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue, width: 2),
-                        color:  const Color.fromARGB(255, 255, 255, 255),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        onPressed: (){
-                          _publishMessage('user_f73fd7c4/C5', 'comandbalans');
-                        },
-                        iconSize: 40,
-                        icon: const Icon(Icons.sim_card, 
-                        color: Color.fromARGB(255, 247, 243, 14)
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    _simButton(currentAppState.getAppConnectionState),
+                    const SizedBox(width: 10),
+                    Column(
+                      children: [
+                        const Text('Balance:'),
+                        Text('${currentAppState.getUssd}р',
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                  Text('99р'),
-                ],
+                  ],
               ),
                 // Центр
                 Expanded(
@@ -200,19 +171,19 @@ class _HomeViewState extends State<HomeView> {
                         // right: 0.0,
                         child: Text('${currentAppState.getVbat}v'),
                       ),
-                      Positioned(
-                        top: 70.0,
-                        left: 150.0,
-                        bottom: 30.0,
-                        // bottom: 0.0,
-                        // right: 0.0,
-                        child: SizedBox(
-                          width: 35,
-                          height: 35,
-                          //color: const Color.fromARGB(255, 86, 140, 201),
-                          child: Image.asset("assets/img/term.png")
-                        ),
-                      ),
+                      // Positioned(
+                      //   top: 70.0,
+                      //   left: 150.0,
+                      //   bottom: 30.0,
+                      //   // bottom: 0.0,
+                      //   // right: 0.0,
+                      //   child: SizedBox(
+                      //     width: 35,
+                      //     height: 35,
+                      //     //color: const Color.fromARGB(255, 86, 140, 201),
+                      //     child: Image.asset("assets/img/term.png")
+                      //   ),
+                      // ),
                       Positioned(
                         // left: 40.0,
                         // bottom: 32.0,
@@ -224,31 +195,31 @@ class _HomeViewState extends State<HomeView> {
                           onPressed: ()  => newMethod(context),
                         ),
                       ),
-                      Positioned(
-                         //left: 0,
-                        // bottom: 32.0,
-                        //  top: 26.0,
-                         right: -8,
-                        child: RotatedBox(
-                          quarterTurns: 3,
-                          child: IconButton(
-                            color: const Color.fromARGB(255, 92, 166, 226),
-                            icon: const Icon(Icons.key,size: 35.0), 
-                            onPressed: () {}, //=> newMethod(context),
-                          ),
-                        ),
-                      ),
-                      const Positioned(
-                        // left: 40.0,
-                         bottom: 39.0,
-                        //  top: 26.0,
-                          right: 115.0,
-                        child: Text('25°С',style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        )
+                      // Positioned(
+                      //    //left: 0,
+                      //   // bottom: 32.0,
+                      //   //  top: 26.0,
+                      //    right: -8,
+                      //   child: RotatedBox(
+                      //     quarterTurns: 3,
+                      //     child: IconButton(
+                      //       color: const Color.fromARGB(255, 92, 166, 226),
+                      //       icon: const Icon(Icons.key,size: 35.0), 
+                      //       onPressed: () {}, //=> newMethod(context),
+                      //     ),
+                      //   ),
+                      // ),
+                      // const Positioned(
+                      //   // left: 40.0,
+                      //    bottom: 39.0,
+                      //   //  top: 26.0,
+                      //     right: 115.0,
+                      //   child: Text('25°С',style: TextStyle(
+                      //       fontSize: 22,
+                      //     ),
+                      //   )
                         
-                      ),
+                      // ),
                     ],
                     
                   ),
@@ -294,13 +265,20 @@ class _HomeViewState extends State<HomeView> {
                     _viewInfoText(currentAppState.getCF,'CF:${currentAppState.getCF}'),
                     Row(children: [
                         const Icon(Icons.thermostat_outlined),
-                      _viewInfoText(currentAppState.getDs0,'${currentAppState.getDs0}°C'),
+                      _viewInfoText(currentAppState.getDs0,'${currentAppState.getDs0}°'),
                      ],
                     ),
                     
-                    _viewInfoText(currentAppState.getDs1,'${currentAppState.getDs1}°C'),
-                    _viewInfoText(currentAppState.getDs2,'${currentAppState.getDs2}°C'),
-                    _viewInfoText(currentAppState.getDs3,'${currentAppState.getDs3}°C'),
+                    _viewInfoText(currentAppState.getDs1,'${currentAppState.getDs1}°'),
+                    _viewInfoText(currentAppState.getDs2,'${currentAppState.getDs2}°'),
+                    _viewInfoText(currentAppState.getDs3,'${currentAppState.getDs3}°'),
+                    Row(
+                      children: [
+                        const Icon(Icons.access_time),
+                        _viewInfoText(currentAppState.getUptime,'${currentAppState.getUptime}ч'),     
+                      ],
+                    ),
+                    
                   ],
                 ),
               ),
@@ -319,7 +297,8 @@ class _HomeViewState extends State<HomeView> {
                           width: 150,
                           height: 2,
                           color: const Color.fromARGB(255, 92, 166, 226),
-                        ),  
+                        ), 
+
                         IconButton(
                           onPressed: (){}, 
                           icon: const Icon(Icons.surround_sound_outlined ,size: 50.0,color: Color.fromARGB(255, 92, 166, 226)),
@@ -333,21 +312,19 @@ class _HomeViewState extends State<HomeView> {
               flex:2,
               child: Column(
                 children: <Widget>[
-                  IconButton(
-                    onPressed: (){}, 
-                    icon: const Icon(Icons.lock_outline,size: 50.0,color: Color.fromARGB(255, 92, 166, 226)),
-                    ),
+                  _lockButton(currentAppState.getAppConnectionState,currentAppState.getSecurity),
                     Container(
                     width: 150,
                     height: 2,
                     color: const Color.fromARGB(255, 92, 166, 226),
                   ), 
-                    IconButton(
-                    onPressed: (){},
-                    icon: const Icon(Icons.lock_open,
-                    size: 50.0,color: Color.fromARGB(255, 92, 166, 226)
-                    ),
-                    ),
+                  _unlockButton(currentAppState.getAppConnectionState,currentAppState.getSecurity),
+                    // IconButton(
+                    // onPressed: (){},
+                    // icon: const Icon(Icons.lock_open,
+                    // size: 50.0,color: Color.fromARGB(255, 92, 166, 226)
+                    // ),
+                    // ),
                     
                 ],
               )
@@ -366,6 +343,101 @@ class _HomeViewState extends State<HomeView> {
     
   }
 
+  Widget _locationButton(MQTTAppConnectionState state){
+    if(state == MQTTAppConnectionState.connected){
+      return Padding(
+                    padding: const EdgeInsets.only(
+                      left: 10.0,
+                      top: 10.0,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 2),
+                        color:  const Color.fromARGB(255, 255, 255, 255),
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        onPressed: (){
+                          _publishMessage('user_f73fd7c4/C5', 'comandlocation');
+                        },
+                        iconSize: 40,
+                        icon: const Icon(Icons.location_on, 
+                        color: Color.fromARGB(255, 207, 20, 6)
+                        ),
+                      ),
+                    ),
+                  );
+    } else {
+      return Padding(
+                    padding: const EdgeInsets.only(
+                      left: 10.0,
+                      top: 10.0,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 2),
+                        color:  const Color.fromARGB(255, 255, 255, 255),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const IconButton(
+                        onPressed: null,
+                        iconSize: 40,
+                        icon: Icon(Icons.location_on, 
+                        color: Color.fromARGB(255, 157, 158, 157),
+                        ),
+                      ),
+                    ),
+                  );
+    }
+  }
+  Widget _simButton(MQTTAppConnectionState state){
+    if (state == MQTTAppConnectionState.connected){
+      return Padding(
+                    padding: const EdgeInsets.only(
+                      left: 10.0,
+                      top: 10.0,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 2),
+                        color:  const Color.fromARGB(255, 255, 255, 255),
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        onPressed: (){
+                          _publishMessage('user_f73fd7c4/C5', 'comandbalans');
+                        },
+                        iconSize: 40,
+                        icon: const Icon(Icons.sim_card, 
+                        color: Color.fromARGB(255, 247, 243, 14)
+                        ),
+                      ),
+                    ),
+                  );
+    } else {
+      return Padding(
+                    padding: const EdgeInsets.only(
+                      left: 10.0,
+                      top: 10.0,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 2),
+                        color:  const Color.fromARGB(255, 255, 255, 255),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const IconButton(
+                        onPressed: null,
+                        iconSize: 40,
+                        icon: Icon(Icons.sim_card, 
+                        color: Color.fromARGB(255, 157, 158, 157),
+                        ),
+                      ),
+                    ),
+                  );
+    }
+  }
+  
   Future<void> refreshComand() async {
     _publishMessage('user_f73fd7c4/C5', 'comandRefresh');
     Future.delayed(const Duration(seconds: 4));
@@ -551,6 +623,42 @@ class _HomeViewState extends State<HomeView> {
               visible: true,
               child: Text(text),
             );
+    }
+  }
+  
+  Widget _lockButton(MQTTAppConnectionState state, String state2){
+    if(state == MQTTAppConnectionState.connected && state2 == 'lock0') {
+      return IconButton(          
+          onPressed: (){},
+          icon: const Icon(Icons.lock_outline,
+          size: 50.0,color: Color.fromARGB(255, 92, 166, 226)
+          ),
+        );
+    } else {
+      return const IconButton(          
+          onPressed: null,
+          icon: Icon(Icons.lock_outline,
+          size: 50.0,color: Color.fromARGB(255, 157, 158, 157),
+          ),
+        );
+    }
+  }
+
+  Widget _unlockButton(MQTTAppConnectionState state, String state2){
+    if(state == MQTTAppConnectionState.connected && state2 == 'lock1') {
+      return IconButton(          
+          onPressed: (){},
+          icon: const Icon(Icons.lock_open,
+          size: 50.0,color: Color.fromARGB(255, 92, 166, 226)
+          ),
+        );
+    } else {
+      return const IconButton(          
+          onPressed: null,
+          icon: Icon(Icons.lock_open,
+          size: 50.0,color: Color.fromARGB(255, 157, 158, 157),
+          ),
+        );
     }
   }
 

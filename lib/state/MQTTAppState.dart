@@ -10,12 +10,12 @@ class MQTTAppState with ChangeNotifier{
   String _ds2 = '';
   String _ds3 = '';
   String _timer = '';
-  String _uptime = '';
+  String _uptime = '1';
   String _security = '';
   String _engine = '';
   String _vbat = '';
   String _ussl = '';
-  String _ussd = '';
+  String _ussd = '153.4';
   String _rssi = '';
   String _c = '';
   String _cf = '';

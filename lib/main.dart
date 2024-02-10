@@ -5,12 +5,9 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:app_mqtt/state/MQTTAppState.dart';
-// import 'package:flutter_redux/flutter_redux.dart';
-// import 'package:redux/redux.dart';
 import 'widgets/home_screen.dart';
 import 'widgets/settings_screen.dart';
 import 'widgets/map_screen.dart';
-import 'widgets/home_screen_1.dart';
 import 'widgets/topic_set.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -48,8 +45,6 @@ class MyApp extends StatelessWidget {
               create: (_) => MQTTAppState(),
               child: const HomeView(),
             ),
-          // '/ref': (context) =>  const OnePage(),
-          '/MyPage': (context) => const MyHomePage(), 
           '/settings': (context) =>  const SettingsView(),
           '/map': (context) => const MapView(),
           '/topic':(context) => TopicSet(),
