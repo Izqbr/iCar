@@ -1,15 +1,10 @@
-//import 'package:app_mqtt/main.dart';
-// import 'package:app_mqtt/redux/app_state.dart';
-// import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_mqtt/mqtt.dart';
 import 'package:app_mqtt/state/MQTTAppState.dart';
- 
-//   final String _url = "srv2.clusterfly.ru";
-//   final String _portValue = "9991";
-//   final String _userName = "user_f73fd7c4";
-//   final String _password = "pass_722e37c7";
+// import 'package:hive_flutter/hive_flutter.dart';
+import 'package:app_mqtt/widgets/settings_screen.dart';
+
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -19,14 +14,30 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
+  // ignore: prefer_typing_uninitialized_variables
+  late final _hostValue;
+  late final _portValue;
+  late final _userValue;
+  late final _passValue;
+  late final _idValue;
+  // late final _ioTimeoutValue;
+  late final _keepAliveValue;
+  late final _prefixValue;
+  late SettingsView settingsVariables;
   late MQTTAppState currentAppState;
   late MQTTManager manager;
-
+  // final box = Hive.box('SettingsBox');
   @override
   void initState() {
     super.initState();
-    
+    SettingsViewState().getValue("url").then((value) => _hostValue=value);
+    SettingsViewState().getValue("port").then((value) => _portValue=value);
+    SettingsViewState().getValue("user").then((value) => _userValue=value);
+    SettingsViewState().getValue("password").then((value) => _passValue=value);
+    SettingsViewState().getValue("id").then((value) => _idValue=value);
+    // const SettingsView().getValue("ioTimeout").then((value) => _ioTimeoutValue=value);
+    SettingsViewState().getValue("keepAlive").then((value) => _keepAliveValue=value);
+    SettingsViewState().getValue("prefix").then((value) => _prefixValue=value); 
     
   }
 
@@ -426,12 +437,18 @@ class _HomeViewState extends State<HomeView> {
   }
   
   Future<void> refreshComand() async {
-    _publishMessage('user_f73fd7c4/C5', 'comandRefresh');
-    Future.delayed(const Duration(seconds: 4));
+    var state = currentAppState.getAppConnectionState;
+    if (state == MQTTAppConnectionState.connected){
+      _publishMessage('user_f73fd7c4/C5', 'comandRefresh');
+      Future.delayed(const Duration(seconds: 4));
+    } else {
+      Future.delayed(const Duration(seconds: 4));
     }
+  }
 
   List<Widget> _onOff(MQTTAppConnectionState state) {
-    return  <Widget>[
+    
+      return  <Widget>[
         IconButton(
           icon: const Icon(
             Icons.power_settings_new,
@@ -445,6 +462,7 @@ class _HomeViewState extends State<HomeView> {
         )
 
       ];
+        
   }
 
   Widget _buildConnectionStateText(String status,MQTTAppConnectionState state) {
@@ -711,19 +729,17 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void _configureAndConnect() {
-    // ignore: flutter_style_todos
-    // TODO: Use UUID
-    String osPrefix = 'Flutter_iOS';
-    
+        
     manager = MQTTManager(
-        host: 'srv2.clusterfly.ru',//_hostTextController.text,
-        port: 9991,//int.parse(_portTextController.text),
-        user: 'user_f73fd7c4',//_userTextController.text,
-        pass: 'pass_722e37c7',
-        topic: 'user_f73fd7c4/c5',
-        identifier: osPrefix,
+        host: _hostValue,
+        port: int.parse(_portValue),
+        user: _userValue,
+        pass: _passValue,
+        topic: '$_prefixValue/c5',
+        identifier: _idValue,
         state: currentAppState, 
-        keepAlive: '60');
+        keepAlive: _keepAliveValue);
+        // _ioTimeout: _ioTimeout),
     manager.initializeMQTTClient();
     manager.connect();
   }
@@ -735,6 +751,8 @@ class _HomeViewState extends State<HomeView> {
   void _publishMessage(String top, String text) {
     manager.publish(top, text);    
   }
+
+
 }
 
 class SliderExample extends StatefulWidget {

@@ -18,6 +18,7 @@ class MQTTManager {
   final String _user;
   final String _pass;
   final String _keepAlive;
+  // final String _oiTimeout;
   final String _topic;
 
   // Constructor
@@ -28,6 +29,7 @@ class MQTTManager {
       required String user,
       required String pass,
       required String keepAlive,
+      // required String ioTimeout,
       required String topic,
       required String identifier,
       required MQTTAppState state
@@ -39,12 +41,14 @@ class MQTTManager {
         _user = user,
         _pass = pass,
         _keepAlive = keepAlive,
-        _topic = topic,
+        // _ioTimeout = ioTimeout,
+         _topic = topic,
         _currentState = state;
 
   void initializeMQTTClient() {
     _client = MqttServerClient(_host, _identifier);
     _client!.port = _port;
+    // _client!.ioT
     _client!.keepAlivePeriod = int.parse(_keepAlive);
     _client!.onDisconnected = onDisconnected;
     _client!.secure = false;
@@ -58,8 +62,8 @@ class MQTTManager {
     final MqttConnectMessage connMess = MqttConnectMessage()
         //.authenticateAs(_user, _pass)
         .withClientIdentifier(_identifier)
-        .withWillTopic('user_f73fd7c4/c5') // If you set this you must set a will message
-        .withWillMessage('Connected_FlutterApp')
+        .withWillTopic(_topic) // If you set this you must set a will message
+        .withWillMessage('Connected_$_identifier')
         .startClean() // Non persistent session for testing
         .withWillQos(MqttQos.atLeastOnce);
     //print('EXAMPLE::Mosquitto client connecting....');

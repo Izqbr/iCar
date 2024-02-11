@@ -17,12 +17,12 @@ class _TopicSetState extends State<TopicSet>{
     final TextEditingController _keepAliveTextController = TextEditingController();
     final TextEditingController _prefixTextController = TextEditingController();
 
-    final String _url = "srv2.clusterfly.ru";
-    final String _portValue = "9991";
-    final String _userName = "user_f73fd7c4";
-    final String _password = "pass_722e37c7";
-    final String _keepAlive = "60";
-    final String _prefix = "60";
+    final String _url = "";
+    final String _portValue = "";
+    final String _userName = "";
+    final String _password = "";
+    final String _keepAlive = "";
+    final String _prefix = "";
 
     @override
     void initState() {
