@@ -56,7 +56,8 @@ class _HomeViewState extends State<HomeView> {
     currentAppState = appState;
     return Scaffold(
       appBar: AppBar(  
-        centerTitle: true,     
+        centerTitle: true, 
+        iconTheme: const IconThemeData(color: Colors.white),    
         backgroundColor: const Color.fromARGB(255, 92, 166, 226),
         title: const Text(
                       "iCar_v5.2",
@@ -355,6 +356,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                       child: IconButton(
                         onPressed: (){
+                          Navigator.pushNamed(context, '/map');
                           _publishMessage('user_f73fd7c4/C5', 'comandlocation');
                         },
                         iconSize: 40,
