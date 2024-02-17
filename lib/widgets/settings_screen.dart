@@ -32,12 +32,17 @@ class SettingsViewState extends State<SettingsView>{
   Future<void> setValue(String key, String text) async {
     await box.put(key, text);
   }
-
+  Future<void> setIntValue(String key, int val) async {
+    await box.put(key, val);
+  }
   Future<String> getValue(String key) async {
-    final value = box.get(key, defaultValue: '0');
+    final value = box.get(key, defaultValue: '');
     return value;
   }
-  
+  Future<int> getIntValue(String key) async {
+    final value = box.get(key, defaultValue: 0000);
+    return value;
+  }
   String get getHost => _hostTextController.text;
   // get getHost => null;
   
@@ -90,7 +95,7 @@ class SettingsViewState extends State<SettingsView>{
                 InkWell(
                   onTap: () {
                     setValue("url",_hostTextController.text);
-                    setValue("port",_portTextController.text);
+                    setIntValue("port",int.parse(_portTextController.text));
                     setValue("user",_userTextController.text);
                     setValue("password",_passTextController.text);
                     setValue("id",_idTextController.text);

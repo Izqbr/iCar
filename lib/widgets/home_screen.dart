@@ -23,7 +23,7 @@ class _HomeViewState extends State<HomeView> {
   // late final _ioTimeoutValue;
   late final _keepAliveValue;
   late final _prefixValue;
-  late SettingsView settingsVariables;
+  // late SettingsView settingsVariables;
   late MQTTAppState currentAppState;
   late MQTTManager manager;
   // final box = Hive.box('SettingsBox');
@@ -31,7 +31,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     SettingsViewState().getValue("url").then((value) => _hostValue=value);
-    SettingsViewState().getValue("port").then((value) => _portValue=value);
+    SettingsViewState().getIntValue("port").then((value) => _portValue=value);
     SettingsViewState().getValue("user").then((value) => _userValue=value);
     SettingsViewState().getValue("password").then((value) => _passValue=value);
     SettingsViewState().getValue("id").then((value) => _idValue=value);
@@ -71,13 +71,13 @@ class _HomeViewState extends State<HomeView> {
       ),
       drawer:  Drawer(
         shadowColor: Colors.amberAccent,
-        surfaceTintColor: const Color.fromARGB(255, 68, 180, 255),
+        surfaceTintColor: const Color.fromARGB(255, 92, 166, 226),
         child: ListView(
           padding: EdgeInsets.zero,
           children:  <Widget>[
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromARGB(255, 92, 166, 226),
               ),
               child: Text('Header'),
             ),
@@ -88,27 +88,27 @@ class _HomeViewState extends State<HomeView> {
               ),
               onTap: () => Navigator.pushNamed(context, '/settings'),
             ),
-            ListTile(
-              title: const Text('Topic'),
-              leading: const Icon(
-                Icons.settings,
-              ),
-              onTap: () => Navigator.pushNamed(context, '/topic'),
-            ),
-            ListTile(
-              title: const Text('Alarm Settings'),
-              leading: const Icon(
-                Icons.settings,
-              ),
-              onTap: () => Navigator.pushNamed(context, '/settings'),
-            ),
-            ListTile(
-              title: const Text('Настройки4'),
-              leading: const Icon(
-                Icons.settings,
-              ),
-              onTap: () => Navigator.pushNamed(context, '/settings'),
-            ),
+            // ListTile(
+            //   title: const Text('Topic'),
+            //   leading: const Icon(
+            //     Icons.settings,
+            //   ),
+            //   onTap: () => Navigator.pushNamed(context, '/topic'),
+            // ),
+            // ListTile(
+            //   title: const Text('Alarm Settings'),
+            //   leading: const Icon(
+            //     Icons.settings,
+            //   ),
+            //   onTap: () => Navigator.pushNamed(context, '/settings'),
+            // ),
+            // ListTile(
+            //   title: const Text('Настройки4'),
+            //   leading: const Icon(
+            //     Icons.settings,
+            //   ),
+            //   onTap: () => Navigator.pushNamed(context, '/settings'),
+            // ),
           ],
         ),
       ),
@@ -196,17 +196,8 @@ class _HomeViewState extends State<HomeView> {
                       //     child: Image.asset("assets/img/term.png")
                       //   ),
                       // ),
-                      Positioned(
-                        // left: 40.0,
-                        // bottom: 32.0,
-                         top: 26.0,
-                        right: 75.0,
-                        child: IconButton(
-                          color: const Color.fromARGB(255, 92, 166, 226),
-                          icon: const Icon(Icons.timer,size: 40.0), 
-                          onPressed: ()  => newMethod(context),
-                        ),
-                      ),
+                      _timerButton(currentAppState.getAppConnectionState),
+                      
                       // Positioned(
                       //    //left: 0,
                       //   // bottom: 32.0,
@@ -339,6 +330,34 @@ class _HomeViewState extends State<HomeView> {
       )
     );
     
+  }
+
+  Widget _timerButton(MQTTAppConnectionState state){
+    if (state == MQTTAppConnectionState.connected){
+      return Positioned(
+                        // left: 40.0,
+                        // bottom: 32.0,
+                         top: 26.0,
+                        right: 75.0,
+                        child: IconButton(
+                          color: const Color.fromARGB(255, 92, 166, 226),
+                          icon: const Icon(Icons.timer,size: 40.0), 
+                          onPressed: ()  => newMethod(context),
+                        ),
+                      );
+    } else {
+      return const Positioned(
+                        // left: 40.0,
+                        // bottom: 32.0,
+                         top: 26.0,
+                        right: 75.0,
+                        child: IconButton(
+                          color: Color.fromARGB(255, 157, 158, 157),
+                          icon: Icon(Icons.timer,size: 40.0), 
+                          onPressed: null,
+                        ),
+                      );
+    }
   }
 
   Widget _locationButton(MQTTAppConnectionState state){
@@ -734,7 +753,7 @@ class _HomeViewState extends State<HomeView> {
         
     manager = MQTTManager(
         host: _hostValue,
-        port: int.parse(_portValue),
+        port: _portValue,
         user: _userValue,
         pass: _passValue,
         topic: '$_prefixValue/c5',
